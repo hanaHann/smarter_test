@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="./css/style.css">
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.14/vue.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.14/vue.js"></script>
+
+<!-- font-awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
+    
+<title>面試題目</title>
+</head>
+<body class="index">
+
+    <div class="wrap" id="index">
+        <div class="cards">
+
+            <card_component v-for="(item,index) in resultRows" :item="item" :key="index" >
+            </card_component>
+        </div>
+    
+
+       
+    </div>
+
+    <script>
+
+Vue.component('card_component',{
+    template:`
+        <div class="card">
+            <div class="pic">
+                <img :src="item.previewPictureSrc" alt="Image">
+            </div>
+            <div class="inf">
+                <h3>{{item.previewPictureAlt}}</h3>
+                <p class="detail">
+                    {{item.previewContext}}
+                </p>
+                <button>
+                    立即前往 >
+                </button>
+
+            </div>
+        </div>
+       
+        `,
+        data() {
+            return {
+                choose:false,
+            }
+        },
+        props:{
+            item:Object,
+        },
+        method:{
+
+        },
+        computed:{
+        }
+    })
+
+
+        new Vue({
+            el:'#index',
+            data:{
+                resultRows:[],
+            },
+            computed: {  
+            },
+            methods: {  
+            },
+            mounted() {
+                let dataUrl= "https://event.smarter.com.tw/api/spa/bestseller/interview"
+                let xhr = new XMLHttpRequest()
+                // xhr.onload = function(){
+                //     this.result = JSON.parse(this.responseText);
+                //     console.log(this.result);
+                // }     
+                xhr.open('GET',dataUrl, true)
+                xhr.send()
+
+                xhr.onload = () => {
+                    this.resultRows = JSON.parse(xhr.responseText).data;
+                    console.log("結果",this.resultRows);
+                } 
+          
+
+            },
+        })
+        
+      
+    </script>
+
+</body>
+</html>
